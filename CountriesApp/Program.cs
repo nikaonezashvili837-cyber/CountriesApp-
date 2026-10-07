@@ -1,12 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
-string[] countries =
+Country[] countries =
 [
-    "United States",
-    "Canada",
-    "United Kingdom",
-    "India",
-    "Japan"
+    new Country(0, "United States"),
+    new Country(1, "Canada"),
+    new Country(2, "United Kingdom"),
+    new Country(3, "India"),
+    new Country(4, "Japan")
 ];
 app.MapGet("/countries", async (HttpContext context) =>
 {
