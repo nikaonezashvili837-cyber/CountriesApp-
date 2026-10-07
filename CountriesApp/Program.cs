@@ -10,7 +10,7 @@ Country[] countries =
 ];
 app.MapGet("/countries", async (HttpContext context) =>
 {
-    var countiesList = countries.Select(element => $"<li>{element}</li>");
+    var countiesList = countries.Select(element => $"<li>{element.CountryName}</li>");
     string html = String.Join("", countiesList);
     await context.Response.WriteAsync($@"
     <html>
