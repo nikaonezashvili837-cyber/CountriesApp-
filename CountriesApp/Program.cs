@@ -22,13 +22,27 @@ app.MapGet("/countries", async (HttpContext context) =>
     </html>
     ");
 });
-app.MapGet("/countries/{id:int}", async (HttpContext context) =>
+app.MapGet("/countries/{id:int:range(0,5)}", async (HttpContext context) =>
 {
     int id;
     Int32.TryParse(context.Request.RouteValues["id"]?.ToString(), out id);
     var country = countries.Where(element => element.Id == id).Select(element => element.CountryName);
     string html = String.Join("", country);
     await context.Response.WriteAsync($@"
+    <html>
+     <body>
+        <p>
+          {html}
+        </p>
+     </body>
+    </html>
+    ");
+});
+app.MapFallback(async (HttpContext context) =>
+{
+  context.Response.StatusCode = 400;
+  string html = $"<h1>Nothing found at {context.Request.Path}</h1>";
+  await context.Response.WriteAsync($@"
     <html>
      <body>
         <p>
