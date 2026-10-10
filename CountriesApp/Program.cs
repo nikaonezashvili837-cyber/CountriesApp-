@@ -22,10 +22,8 @@ app.MapGet("/countries", async (HttpContext context) =>
     </html>
     ");
 });
-app.MapGet("/countries/{id:int:range(0,4)}", async (HttpContext context) =>
+app.MapGet("/countries/{id:int:range(0,4)}", async (HttpContext context ,int id) =>
 {
-  int id;
-  Int32.TryParse(context.Request.RouteValues["id"]?.ToString(), out id);
   var country = countries.Where(element => element.Id == id).Select(element => element.CountryName);
   string html = String.Join("", country);
   await context.Response.WriteAsync($@"
@@ -45,7 +43,7 @@ app.MapFallback(async (HttpContext context) =>
   Int32.TryParse(idValue, out id);
   if (id > 100)
   {
-    context.Response.StatusCode = 404;
+    context.Response.StatusCode = 400;
     await context.Response.WriteAsync($@"
     <html>
      <body>
@@ -57,7 +55,7 @@ app.MapFallback(async (HttpContext context) =>
     ");
     return;
   }
-  context.Response.StatusCode = 400;
+  context.Response.StatusCode = 40;
   await context.Response.WriteAsync($@"
     <html>
      <body>
