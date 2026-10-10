@@ -47,15 +47,13 @@ app.MapFallback(async (HttpContext context) =>
     await context.Response.WriteAsync($@"
     <html>
      <body>
-        <p>
-          <h1>The CountryID should be between 1 and 100</h1>
-        </p>
+          <h1>The CountryID should be between 1 and 100</h1>W
      </body>
     </html>
     ");
     return;
   }
-  context.Response.StatusCode = 40;
+  context.Response.StatusCode = 404;
   await context.Response.WriteAsync($@"
     <html>
      <body>
