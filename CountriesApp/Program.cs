@@ -22,7 +22,7 @@ app.MapGet("/countries", async (HttpContext context) =>
     </html>
     ");
 });
-app.MapGet("/countries/{id:int:range(0,5)}", async (HttpContext context) =>
+app.MapGet("/countries/{id:int:range(0,4)}", async (HttpContext context) =>
 {
   int id;
   Int32.TryParse(context.Request.RouteValues["id"]?.ToString(), out id);
