@@ -10,9 +10,9 @@ Country[] countries =
 ];
 app.MapGet("/countries", async (HttpContext context) =>
 {
-    var countiesList = countries.Select(element => $"<li>{element.CountryName}</li>");
-    string html = String.Join("", countiesList);
-    await context.Response.WriteAsync($@"
+  var countiesList = countries.Select(element => $"<li>{element.CountryName}</li>");
+  string html = String.Join("", countiesList);
+  await context.Response.WriteAsync($@"
     <html>
      <body>
         <ul>
@@ -24,11 +24,11 @@ app.MapGet("/countries", async (HttpContext context) =>
 });
 app.MapGet("/countries/{id:int:range(0,5)}", async (HttpContext context) =>
 {
-    int id;
-    Int32.TryParse(context.Request.RouteValues["id"]?.ToString(), out id);
-    var country = countries.Where(element => element.Id == id).Select(element => element.CountryName);
-    string html = String.Join("", country);
-    await context.Response.WriteAsync($@"
+  int id;
+  Int32.TryParse(context.Request.RouteValues["id"]?.ToString(), out id);
+  var country = countries.Where(element => element.Id == id).Select(element => element.CountryName);
+  string html = String.Join("", country);
+  await context.Response.WriteAsync($@"
     <html>
      <body>
         <p>
@@ -40,13 +40,29 @@ app.MapGet("/countries/{id:int:range(0,5)}", async (HttpContext context) =>
 });
 app.MapFallback(async (HttpContext context) =>
 {
+  var idValue = context.Request.Path.Value?.Split('/').LastOrDefault();
+  int id;
+  Int32.TryParse(idValue, out id);
+  if (id > 100)
+  {
+    context.Response.StatusCode = 404;
+    await context.Response.WriteAsync($@"
+    <html>
+     <body>
+        <p>
+          <h1>The CountryID should be between 1 and 100</h1>
+        </p>
+     </body>
+    </html>
+    ");
+    return;
+  }
   context.Response.StatusCode = 400;
-  string html = $"<h1>Nothing found at {context.Request.Path}</h1>";
   await context.Response.WriteAsync($@"
     <html>
      <body>
         <p>
-          {html}
+          <h1>No countries</h1>
         </p>
      </body>
     </html>
