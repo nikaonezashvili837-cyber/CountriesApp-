@@ -68,5 +68,16 @@ app.MapFallback(async (HttpContext context) =>
     </html>
     ");
 });
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", async (HttpContext context) =>
+{
+  await context.Response.WriteAsync($@"
+    <html>
+     <body>
+        <p>
+          <h1>Hello world</h1>
+        </p>
+     </body>
+    </html>
+    ");
+});
 app.Run();
